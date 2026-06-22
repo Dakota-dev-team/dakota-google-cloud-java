@@ -1,0 +1,5 @@
+This repository is a fork of the Google Cloud Java project by Google.
+Original project: https://github.com/googleapis/google-cloud-java
+
+Changes made by Matthijs de Wit (dakota-devteam@gmail.com):
+- Added support for nullable string columns in the BigQuery JDBC driver

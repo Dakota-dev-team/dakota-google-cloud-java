@@ -55,6 +55,7 @@ import java.sql.SQLException;
 import java.sql.SQLXML;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -142,8 +143,16 @@ class BigQueryPreparedStatement extends BigQueryStatement implements PreparedSta
   }
 
   @Override
-  public void setNull(int parameterIndex, int sqlType) {
-    // TODO(neenu): implement null case
+  public void setNull(int parameterIndex, int sqlType) throws SQLException {
+    LOG.finest("++enter++");
+    LOG.finest("setNull called with sqlType : %s", sqlType);
+    checkClosed();
+    if (sqlType == Types.VARCHAR) {
+      this.parameterHandler.setParameter(parameterIndex, null, String.class);
+    } else {
+      LOG.warning("setNull with sqlType other than VARCHAR (= 12) is not supported. Was : %s", sqlType);
+      // TODO :NOT IMPLEMENTED
+    }
   }
 
   @Override
@@ -498,8 +507,16 @@ class BigQueryPreparedStatement extends BigQueryStatement implements PreparedSta
   }
 
   @Override
-  public void setNull(int parameterIndex, int sqlType, String typeName) {
-    // TODO :NOT IMPLEMENTED
+  public void setNull(int parameterIndex, int sqlType, String typeName) throws SQLException {
+    LOG.finest("++enter++");
+    LOG.finest("setNull called with typeName : %s", typeName);
+    checkClosed();
+    if (typeName.equals("STRING")) {
+      this.parameterHandler.setParameter(parameterIndex, null, String.class);
+    } else {
+      LOG.warning("setNull with typeName other than STRING is not supported. Was : %s",  typeName);
+      // TODO :NOT IMPLEMENTED
+    }
   }
 
   @Override
